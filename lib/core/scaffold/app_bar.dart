@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:syncodoro/screens/settings.dart';
 import 'package:syncodoro/screens/statistics.dart';
-
 import 'package:syncodoro/utils/teleport.dart';
 
 class ScaffoldAppBar extends StatefulWidget implements PreferredSizeWidget {
