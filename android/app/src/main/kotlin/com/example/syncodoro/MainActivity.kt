@@ -1,4 +1,4 @@
-package com.example.syncodoro
+package de.timdavidfriedrich.syncodoro
 
 import io.flutter.embedding.android.FlutterActivity
 

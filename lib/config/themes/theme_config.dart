@@ -131,7 +131,11 @@ class ThemeHandler extends StatelessWidget {
           fontWeight: FontWeight.bold,
         ),
         bodySmall: GoogleFonts.azeretMono(color: Colors.amber[300]),
-        bodyMedium: GoogleFonts.azeretMono(color: Colors.amber[600]),
+        bodyMedium: GoogleFonts.azeretMono(
+          color: onPrimary,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
         bodyLarge: GoogleFonts.azeretMono(color: Colors.amber[900]),
         labelSmall: GoogleFonts.azeretMono(color: Colors.purple[300]),
         labelMedium: GoogleFonts.azeretMono(color: Colors.purple[600]),

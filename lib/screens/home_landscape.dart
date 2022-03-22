@@ -42,16 +42,17 @@ class _HomeLandscapeState extends State<HomeLandscape> {
                 IconButton(
                   icon: const Icon(Icons.play_arrow_outlined),
                   iconSize: 72,
-                  onPressed: () => Provider.of<CountdownProvider>(context,
-                          listen: false)
-                      .start(DateTime.now().add(const Duration(minutes: 3))),
+                  onPressed: () =>
+                      Provider.of<CountdownProvider>(context, listen: false)
+                          .start(context,
+                              DateTime.now().add(const Duration(minutes: 3))),
                 ),
                 IconButton(
                   icon: const Icon(Icons.stop_outlined),
                   iconSize: 72,
                   onPressed: () =>
                       Provider.of<CountdownProvider>(context, listen: false)
-                          .stop(),
+                          .stop(context),
                 ),
               ],
             ),

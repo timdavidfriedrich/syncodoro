@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:syncodoro/widgets/countdown.dart';
 
 class Bar extends StatefulWidget {
   const Bar({Key? key}) : super(key: key);
@@ -17,8 +19,11 @@ class _BarState extends State<Bar> {
               color: Theme.of(context).colorScheme.onPrimary, width: 4)),
       margin: const EdgeInsets.fromLTRB(80, 18, 80, 0),
       padding: const EdgeInsets.all(4),
-      // TODO: Bar-Animation
-      child: Container(color: Theme.of(context).colorScheme.secondary),
+      child: LinearProgressIndicator(
+        value: Provider.of<CountdownProvider>(context).percentage,
+        valueColor: AlwaysStoppedAnimation<Color>(
+            Theme.of(context).colorScheme.secondary),
+      ),
     );
   }
 }
