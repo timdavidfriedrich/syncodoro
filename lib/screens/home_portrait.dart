@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:syncodoro/constants/app_constants.dart';
-import 'package:syncodoro/core/firebase/firebase.dart';
-import 'package:syncodoro/utils/console.dart';
+import 'package:syncodoro/utils/providers/countdown_provider.dart';
 import 'package:syncodoro/widgets/bar.dart';
 import 'package:syncodoro/widgets/countdown.dart';
-import 'package:syncodoro/widgets/statusButton.dart';
+import 'package:syncodoro/widgets/play_pause_button.dart';
+import 'package:syncodoro/widgets/status_button.dart';
+import 'package:syncodoro/widgets/stop_button.dart';
 
 class HomePortrait extends StatefulWidget {
   const HomePortrait({Key? key}) : super(key: key);
@@ -24,32 +25,13 @@ class _HomePortraitState extends State<HomePortrait> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           StatusButton(),
-          Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: Countdown(time: pomodoroTime),
-          ),
+          Countdown(),
           Bar(),
           Padding(
             padding: const EdgeInsets.only(top: 48),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.play_arrow_outlined),
-                  iconSize: 72,
-                  onPressed: () =>
-                      Provider.of<CountdownProvider>(context, listen: false)
-                          .start(context,
-                              DateTime.now().add(const Duration(minutes: 3))),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.stop_outlined),
-                  iconSize: 72,
-                  onPressed: () =>
-                      Provider.of<CountdownProvider>(context, listen: false)
-                          .stop(context),
-                ),
-              ],
+              children: [PlayPauseButton(), StopButton()],
             ),
           )
         ],

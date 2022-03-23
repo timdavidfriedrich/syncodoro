@@ -14,7 +14,7 @@ import 'package:syncodoro/core/startup.dart';
 import 'package:syncodoro/screens/home_landscape.dart';
 import 'package:syncodoro/screens/home_portrait.dart';
 import 'package:syncodoro/utils/responsive.dart';
-import 'package:syncodoro/widgets/countdown.dart';
+import 'package:syncodoro/utils/providers/countdown_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
