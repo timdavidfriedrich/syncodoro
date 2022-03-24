@@ -13,11 +13,14 @@ class StopButton extends StatefulWidget {
 class _StopButtonState extends State<StopButton> {
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.stop_outlined),
-      iconSize: 72,
-      onPressed: () =>
-          Provider.of<CountdownProvider>(context, listen: false).stop(context),
-    );
+    return Provider.of<CountdownProvider>(context).status != "stop"
+        ? IconButton(
+            icon: const Icon(Icons.stop_outlined),
+            iconSize: 72,
+            onPressed: () =>
+                Provider.of<CountdownProvider>(context, listen: false)
+                    .stop(context),
+          )
+        : Container();
   }
 }

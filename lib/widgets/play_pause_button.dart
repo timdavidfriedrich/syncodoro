@@ -13,11 +13,22 @@ class PlayPauseButton extends StatefulWidget {
 class _PlayPauseButtonState extends State<PlayPauseButton> {
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.play_arrow_outlined),
-      iconSize: 72,
-      onPressed: () => Provider.of<CountdownProvider>(context, listen: false)
-          .start(context, DateTime.now().add(const Duration(minutes: 3))),
-    );
+    return Provider.of<CountdownProvider>(context).status != "play"
+        ? IconButton(
+            icon: const Icon(Icons.play_arrow_outlined),
+            iconSize: 72,
+            onPressed: () {
+              // TODO: @if ..., dann "pomodoro", @elif ... "break", @else "none"
+              Provider.of<CountdownProvider>(context, listen: false)
+                  .play(context, "pomodoro");
+            },
+          )
+        : IconButton(
+            icon: const Icon(Icons.pause_outlined),
+            iconSize: 64,
+            onPressed: () =>
+                Provider.of<CountdownProvider>(context, listen: false)
+                    .pause(context),
+          );
   }
 }

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:syncodoro/main.dart';
 import 'package:syncodoro/screens/login.dart';
+import 'package:syncodoro/utils/console.dart';
 
 class StartUp extends StatefulWidget {
   const StartUp({Key? key}) : super(key: key);
@@ -28,8 +29,8 @@ class _StartUpState extends State<StartUp> {
           } else if (snapshot.hasData) {
             return const Main();
           } else if (snapshot.hasError) {
-            return const Scaffold(
-                body: Center(child: Text("Critical error!!")));
+            printError("Login (startup)");
+            return const Scaffold(body: Center(child: Text("Error: Startup")));
           } else {
             return const Login();
           }

@@ -30,10 +30,11 @@ class DatabaseProvider extends ChangeNotifier {
     return (await userData.doc(user.uid).get()).exists ? true : false;
   }
 
-  Future setStatus(String status, int timeStarted) async {
+  Future setStatus(String type, String status, int time) async {
     return await userData.doc(user.uid).set({
+      "type": type,
       "status": status,
-      "timeStarted": timeStarted,
+      "time": time,
     }, SetOptions(merge: true));
   }
 

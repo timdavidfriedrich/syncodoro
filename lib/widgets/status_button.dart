@@ -14,7 +14,7 @@ class _StatusButtonState extends State<StatusButton> {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-        child: Text(Provider.of<CountdownProvider>(context).getStatus()),
+        child: Text(Provider.of<CountdownProvider>(context).processType()),
         onPressed: () {});
   }
 }

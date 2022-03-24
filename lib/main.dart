@@ -13,6 +13,7 @@ import 'package:syncodoro/core/scaffold/app_bar.dart';
 import 'package:syncodoro/core/startup.dart';
 import 'package:syncodoro/screens/home_landscape.dart';
 import 'package:syncodoro/screens/home_portrait.dart';
+import 'package:syncodoro/utils/console.dart';
 import 'package:syncodoro/utils/responsive.dart';
 import 'package:syncodoro/utils/providers/countdown_provider.dart';
 
@@ -48,41 +49,47 @@ class Main extends StatefulWidget {
 }
 
 class _MainState extends State<Main> {
-  StreamSubscription? stream;
+  update(snap) async {
+    var value = await snap.data!.data();
+    Provider.of<CountdownProvider>(context, listen: false).updateData(
+      value["type"],
+      value["status"],
+      value["time"],
+      value["pTime"],
+      value["bTime"],
+    );
+  }
 
   @override
   void initState() {
     super.initState();
     Provider.of<ColorProvider>(context, listen: false).initColors();
-    stream = FirebaseFirestore.instance
-        .collection("userData")
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .snapshots()
-        .listen((data) {
-      var value = data.data()!;
-      Provider.of<CountdownProvider>(context, listen: false).updateData(
-        value["status"],
-        value["timeStarted"],
-        value["pTime"],
-        value["bTime"],
-      );
-    });
-  }
-
-  @override
-  void dispose() {
-    stream?.cancel();
-    super.dispose();
   }
 
   // Home-Widget
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: ScaffoldAppBar(),
-      body: Responsive(
-        portraitLayout: HomePortrait(),
-        landscapeLayout: HomeLandscape(),
+    return Scaffold(
+      appBar: const ScaffoldAppBar(),
+      body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+        stream: Provider.of<DatabaseProvider>(context).userStream,
+        builder: (context, snap) {
+          if (snap.hasError) {
+            printError("StreamBuilder (main)");
+            return const Center(child: Text("Error: StreamBuilder"));
+          } else if (snap.hasData) {
+            update(snap);
+            return const Responsive(
+              portraitLayout: HomePortrait(),
+              landscapeLayout: HomeLandscape(),
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(
+                  color: Theme.of(context).colorScheme.secondary),
+            );
+          }
+        },
       ),
     );
   }
