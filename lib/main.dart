@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 
 import 'package:syncodoro/config/themes/color_provider.dart';
 import 'package:syncodoro/config/themes/theme_config.dart';
+import 'package:syncodoro/constants/app_constants.dart';
 import 'package:syncodoro/core/firebase/firebase.dart';
 import 'package:syncodoro/core/scaffold/app_bar.dart';
 import 'package:syncodoro/core/startup.dart';
@@ -50,20 +50,27 @@ class Main extends StatefulWidget {
 
 class _MainState extends State<Main> {
   update(snap) async {
-    var value = await snap.data!.data();
-    Provider.of<CountdownProvider>(context, listen: false).updateData(
-      value["type"],
-      value["status"],
-      value["time"],
-      value["pTime"],
-      value["bTime"],
-    );
+    try {
+      var value = await snap.data!.data();
+      Provider.of<CountdownProvider>(context, listen: false).updateData(
+        value["type"] ?? defaultType,
+        value["status"] ?? defaultStatus,
+        value["started"] ?? defaultStarted,
+        value["remain"] ?? defaultRemain,
+        value["pTime"] ?? defaultPomodoro,
+        value["lbTime"] ?? defaultLBreak,
+        value["sbTime"] ?? defaultSBreak,
+      );
+    } catch (e) {
+      printError("Data not found (main) | \"$e\"");
+    }
   }
 
   @override
   void initState() {
     super.initState();
     Provider.of<ColorProvider>(context, listen: false).initColors();
+    Provider.of<DatabaseProvider>(context, listen: false).updateUser();
   }
 
   // Home-Widget
@@ -75,13 +82,13 @@ class _MainState extends State<Main> {
         stream: Provider.of<DatabaseProvider>(context).userStream,
         builder: (context, snap) {
           if (snap.hasError) {
-            printError("StreamBuilder (main)");
+            printError("StreamBuilder (main) | \"${snap.error}\"");
             return const Center(child: Text("Error: StreamBuilder"));
           } else if (snap.hasData) {
             update(snap);
             return const Responsive(
-              portraitLayout: HomePortrait(),
-              landscapeLayout: HomeLandscape(),
+              portrait: HomePortrait(),
+              landscape: HomeLandscape(),
             );
           } else {
             return Center(

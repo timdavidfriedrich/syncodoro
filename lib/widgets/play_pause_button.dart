@@ -11,6 +11,12 @@ class PlayPauseButton extends StatefulWidget {
 }
 
 class _PlayPauseButtonState extends State<PlayPauseButton> {
+  String processType() {
+    String _type = Provider.of<CountdownProvider>(context, listen: false).type;
+    if (_type == "none") return "pomodoro";
+    return _type;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Provider.of<CountdownProvider>(context).status != "play"
@@ -18,9 +24,8 @@ class _PlayPauseButtonState extends State<PlayPauseButton> {
             icon: const Icon(Icons.play_arrow_outlined),
             iconSize: 72,
             onPressed: () {
-              // TODO: @if ..., dann "pomodoro", @elif ... "break", @else "none"
               Provider.of<CountdownProvider>(context, listen: false)
-                  .play(context, "pomodoro");
+                  .play(context, processType());
             },
           )
         : IconButton(

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:syncodoro/constants/app_constants.dart';
 
 import 'package:syncodoro/core/firebase/firebase.dart';
 import 'package:syncodoro/utils/console.dart';
@@ -10,19 +11,23 @@ class CountdownProvider extends ChangeNotifier {
   Timer? timer;
   double percentage = 0.0;
 
-  String type = "none";
-  String status = "stop";
-  int time = 0;
-  int pTime = 25;
-  int bTime = 5;
+  String type = defaultType;
+  String status = defaultStatus;
+  int started = defaultStarted;
+  int remain = defaultRemain;
+  int pTime = defaultPomodoro;
+  int lbTime = defaultLBreak;
+  int sbTime = defaultSBreak;
 
-  void updateData(
-      String _type, String _status, int _time, int _pTime, int _bTime) {
+  void updateData(String _type, String _status, int _started, int _remain,
+      int _pTime, int _lbTime, int _sbTime) {
     type = _type;
     status = _status;
-    time = _time;
+    started = _started;
+    remain = _remain;
     pTime = _pTime;
-    bTime = _bTime;
+    lbTime = _lbTime;
+    sbTime = _sbTime;
     notifyListeners();
   }
 
@@ -30,8 +35,10 @@ class CountdownProvider extends ChangeNotifier {
     switch (type) {
       case "pomodoro":
         return "ARBEITEN";
-      case "break":
-        return "PAUSE";
+      case "long break":
+        return "LANGE PAUSE";
+      case "short break":
+        return "KURZE PAUSE";
       case "none":
         return "[auswählen]";
       default:
@@ -43,70 +50,62 @@ class CountdownProvider extends ChangeNotifier {
     switch (type) {
       case "pomodoro":
         return pTime;
-      case "break":
-        return bTime;
+      case "long break":
+        return lbTime;
+      case "short break":
+        return sbTime;
       default:
-        return 0;
+        return 1;
     }
   }
 
-  runTimer(context, date) {
+  runTimer(BuildContext context, int _started) {
     if (timer != null) timer!.cancel();
     timer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
       final DateTime now = DateTime.now();
-      int difference = date.difference(now).inSeconds;
-      printHint("$difference | ${difference ~/ 60}");
-      String min = (difference ~/ 60).toString().padLeft(2, "0");
-      String sec = (difference % 60).toString().padLeft(2, "0");
+      int difference = now
+          .difference(DateTime.fromMillisecondsSinceEpoch(_started))
+          .inSeconds;
+      int _remain = remain - difference; // seconds
+      printHint("$_remain | ${_remain ~/ 60}:${_remain % 60}");
+      String min = (_remain ~/ 60).toString().padLeft(2, "0");
+      String sec = (_remain % 60).toString().padLeft(2, "0");
 
-      if (difference <= 0) stop(context);
+      if (_remain <= 0) stop(context);
       clock = min + ":" + sec;
-      percentage = 1 - (difference / (pTime * 60));
+      percentage = 1 - (_remain / getTime());
 
       notifyListeners();
     });
   }
 
-  play(context, String _type) {
+  play(BuildContext context, String _type) {
     type = _type;
-    if (status == "pause") {
-      DateTime _time = DateTime.fromMillisecondsSinceEpoch(time);
-      DateTime date = DateTime.now().add(_time.difference(DateTime.now()));
-      //time = date.millisecondsSinceEpoch;
-      printHint("time (3): $time");
-      runTimer(context, date);
-    } else {
-      printHint("time (1): $time");
-      DateTime date = DateTime.now().add(Duration(minutes: getTime()));
-      time = date.millisecondsSinceEpoch;
-      printHint("time (2): $time");
-
-      runTimer(context, date);
-    }
+    started = DateTime.now().millisecondsSinceEpoch;
+    if (status == "stop") remain = getTime(); // Wenn vorher Stop, Neubeginn
+    runTimer(context, started);
 
     Provider.of<DatabaseProvider>(context, listen: false)
-        .setStatus(type, "play", time);
-    Provider.of<DatabaseProvider>(context, listen: false).setSettings(25, 5);
+        .setStatus(type, "play", started, remain);
 
     notifyListeners();
   }
 
-  resume(context) {
-    DateTime date = DateTime.now().add(Duration(minutes: getTime()));
-    runTimer(context, date);
-  }
-
-  pause(context) {
+  pause(BuildContext context) {
     if (timer != null) timer!.cancel();
-    DateTime _time = DateTime.fromMillisecondsSinceEpoch(time);
-    Provider.of<DatabaseProvider>(context, listen: false).setStatus(
-        type, "pause", _time.difference(DateTime.now()).inMilliseconds);
+    DateTime now = DateTime.now();
+    remain = remain - ((now.millisecondsSinceEpoch - started) ~/ 1000);
+    printHint("remain: $remain");
+    Provider.of<DatabaseProvider>(context, listen: false)
+        .setStatus(type, "pause", 0, remain);
+
+    notifyListeners();
   }
 
-  stop(context) {
+  stop(BuildContext context) {
     if (timer != null) timer!.cancel();
     Provider.of<DatabaseProvider>(context, listen: false)
-        .setStatus("none", "stop", 0);
+        .setStatus("none", "stop", 0, 0);
     percentage = 0;
     clock = "00:00";
 

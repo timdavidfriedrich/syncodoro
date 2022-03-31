@@ -116,13 +116,13 @@ class ThemeHandler extends StatelessWidget {
         headlineMedium: GoogleFonts.azeretMono(color: Colors.pink[600]),
         headlineLarge: GoogleFonts.azeretMono(color: Colors.pink[900]),
         displaySmall: GoogleFonts.azeretMono(
-          color: Colors.blueGrey,
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
+          color: onPrimary,
+          fontSize: 12,
+          fontWeight: FontWeight.normal,
         ),
         displayMedium: GoogleFonts.azeretMono(
           color: onPrimary,
-          fontSize: 24,
+          fontSize: 18,
           fontWeight: FontWeight.bold,
         ),
         displayLarge: GoogleFonts.azeretMono(
@@ -137,8 +137,14 @@ class ThemeHandler extends StatelessWidget {
           fontWeight: FontWeight.bold,
         ),
         bodyLarge: GoogleFonts.azeretMono(color: Colors.amber[900]),
-        labelSmall: GoogleFonts.azeretMono(color: Colors.purple[300]),
-        labelMedium: GoogleFonts.azeretMono(color: Colors.purple[600]),
+        labelSmall: GoogleFonts.azeretMono(
+          color: onPrimary,
+          fontSize: 10,
+        ),
+        labelMedium: GoogleFonts.azeretMono(
+          color: onPrimary,
+          fontSize: 12,
+        ),
         labelLarge: GoogleFonts.azeretMono(
           color: onPrimary,
           fontSize: 24,

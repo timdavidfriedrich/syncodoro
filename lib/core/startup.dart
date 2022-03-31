@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:syncodoro/core/firebase/firebase.dart';
 
 import 'package:syncodoro/main.dart';
 import 'package:syncodoro/screens/login.dart';
@@ -17,8 +19,8 @@ class _StartUpState extends State<StartUp> {
   Widget build(BuildContext context) {
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+        builder: (context, snap) {
+          if (snap.connectionState == ConnectionState.waiting) {
             return Scaffold(
               body: Center(
                 child: CircularProgressIndicator(
@@ -26,10 +28,10 @@ class _StartUpState extends State<StartUp> {
                 ),
               ),
             );
-          } else if (snapshot.hasData) {
+          } else if (snap.hasData) {
             return const Main();
-          } else if (snapshot.hasError) {
-            printError("Login (startup)");
+          } else if (snap.hasError) {
+            printError("Login (startup) | \"${snap.error}\"");
             return const Scaffold(body: Center(child: Text("Error: Startup")));
           } else {
             return const Login();
