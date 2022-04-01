@@ -12,7 +12,12 @@ class _StatisticsState extends State<Statistics> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Statistik")),
-      body: const Center(child: Text("Statistics")),
+      body: const Center(
+          child: Text("Coming soon.\n\nTODO:" +
+              "\n- Statistiken" +
+              "\n- Akzentfarbe Arbeit/Pause" +
+              "\n- Login via Email" +
+              "\n- ...")),
     );
   }
 }
