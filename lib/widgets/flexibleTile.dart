@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 
 class FlexibleTile extends StatefulWidget {
   final String title;
+  final String? subtitle;
   final Widget content;
   final Color? color;
   const FlexibleTile(
-      {Key? key, required this.title, required this.content, this.color})
+      {Key? key,
+      required this.title,
+      this.subtitle,
+      required this.content,
+      this.color})
       : super(key: key);
 
   @override
@@ -23,14 +28,24 @@ class _FlexibleTileState extends State<FlexibleTile> {
     }
   }
 
+  String processSubtitle() {
+    if (widget.subtitle == null) {
+      return "";
+    } else {
+      return widget.subtitle!;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var cs = Theme.of(context).colorScheme;
+    var tt = Theme.of(context).textTheme;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         ListTile(
           title: Text(widget.title),
+          subtitle: Text(processSubtitle(), style: tt.bodySmall),
           onTap: () => setState(() => expanded = !expanded),
           trailing: Padding(
             padding: const EdgeInsets.only(right: 16),

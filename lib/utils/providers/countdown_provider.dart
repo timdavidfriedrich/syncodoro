@@ -62,7 +62,6 @@ class CountdownProvider extends ChangeNotifier {
   runTimer(BuildContext context) {
     stopTimer();
     timer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
-      printHint("status: $status");
       if (status == "stop") {
         percentage = 0;
         clock = "00:00";

@@ -17,8 +17,7 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  bool workColorTileExpanded = false;
-  bool breakColorTileExpanded = false;
+  bool test = false;
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +77,7 @@ class _SettingsState extends State<Settings> {
           ),
           FlexibleTile(
             title: "Akzent-Farbe",
+            subtitle: "Ändert zum Beispiel die Farbe der Progress-Bar.",
             content: GridView.builder(
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -107,8 +107,17 @@ class _SettingsState extends State<Settings> {
               },
             ),
           ),
+          SwitchListTile(
+              title: const Text("Auto. Phasenwechsel"),
+              subtitle: Text(
+                  "Schaltet am Ende jeder Phase automatisch auf Pause/Arbeit.",
+                  style: tt.bodySmall),
+              value: false,
+              onChanged: (value) {}),
           ListTile(
             title: const Text("Zeit-Einstellungen"),
+            subtitle:
+                Text("Timer-Länge für Arbeit/Pause.", style: tt.bodySmall),
             onTap: () => Provider.of<CountdownProvider>(context, listen: false)
                         .status ==
                     "play"
