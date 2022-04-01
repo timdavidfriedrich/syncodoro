@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:syncodoro/config/themes/color_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:syncodoro/core/firebase/firebase.dart';
+import 'package:syncodoro/widgets/flexibleTile.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -69,25 +70,9 @@ class _SettingsState extends State<Settings> {
               ),
             ),
           ),
-          ListTile(
-            title: const Text("Farbe Arbeit"),
-            onTap: () =>
-                setState(() => workColorTileExpanded = !workColorTileExpanded),
-            trailing: Padding(
-              padding: const EdgeInsets.only(right: 16),
-              child: workColorTileExpanded
-                  ? Icon(Icons.keyboard_arrow_up_outlined, color: cs.onPrimary)
-                  : Icon(Icons.keyboard_arrow_down_outlined,
-                      color: cs.onPrimary),
-            ),
-          ),
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 150),
-            height: workColorTileExpanded ? 80 : 0,
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            color: cs.surface,
-            child: GridView.builder(
+          FlexibleTile(
+            title: "Farbe Arbeit",
+            content: GridView.builder(
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: cp.secondaryColorList.length,
@@ -116,25 +101,9 @@ class _SettingsState extends State<Settings> {
               },
             ),
           ),
-          ListTile(
-            title: const Text("Farbe Pause"),
-            onTap: () => setState(
-                () => breakColorTileExpanded = !breakColorTileExpanded),
-            trailing: Padding(
-              padding: const EdgeInsets.only(right: 16),
-              child: breakColorTileExpanded
-                  ? Icon(Icons.keyboard_arrow_up_outlined, color: cs.onPrimary)
-                  : Icon(Icons.keyboard_arrow_down_outlined,
-                      color: cs.onPrimary),
-            ),
-          ),
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 150),
-            height: breakColorTileExpanded ? 80 : 0,
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            color: cs.surface,
-            child: GridView.builder(
+          FlexibleTile(
+            title: "Farbe Pause",
+            content: GridView.builder(
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: cp.secondaryColorList.length,
@@ -162,14 +131,7 @@ class _SettingsState extends State<Settings> {
                 );
               },
             ),
-          ),
-          // SwitchListTile(
-          //   title: Text("Chat einblenden"),
-          //   subtitle: Text("Viel zu hoher Online-Traffic"),
-          //   value: Provider.of<DisplayProvider>(context).displayChat,
-          //   onChanged: (value) =>
-          //       Provider.of<DisplayProvider>(context, listen: false).swapChat(),
-          // ),
+          )
         ],
       ),
     );
