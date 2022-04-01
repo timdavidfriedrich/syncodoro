@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:provider/provider.dart';
-import 'package:syncodoro/core/firebase/firebase.dart';
 
 import 'package:syncodoro/main.dart';
 import 'package:syncodoro/screens/login.dart';

@@ -5,15 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 
-import 'package:syncodoro/config/themes/color_provider.dart';
+import 'package:syncodoro/utils/providers/color_provider.dart';
 import 'package:syncodoro/config/themes/theme_config.dart';
 import 'package:syncodoro/constants/app_constants.dart';
-import 'package:syncodoro/core/firebase/firebase.dart';
 import 'package:syncodoro/core/scaffold/app_bar.dart';
 import 'package:syncodoro/core/startup.dart';
 import 'package:syncodoro/screens/home_landscape.dart';
 import 'package:syncodoro/screens/home_portrait.dart';
 import 'package:syncodoro/utils/console.dart';
+import 'package:syncodoro/utils/providers/database_provider.dart';
+import 'package:syncodoro/utils/providers/google_provider.dart';
 import 'package:syncodoro/utils/responsive.dart';
 import 'package:syncodoro/utils/providers/countdown_provider.dart';
 
@@ -31,10 +32,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => DatabaseProvider()),
-        ChangeNotifierProvider(create: (_) => GoogleProvider()),
         ChangeNotifierProvider(create: (_) => ColorProvider()),
         ChangeNotifierProvider(create: (_) => CountdownProvider()),
+        ChangeNotifierProvider(create: (_) => DatabaseProvider()),
+        ChangeNotifierProvider(create: (_) => GoogleProvider()),
       ],
       child: const ThemeHandler(home: StartUp()), // links to Main()
     );

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncodoro/constants/app_constants.dart';
 
-import 'package:syncodoro/core/firebase/firebase.dart';
 import 'package:syncodoro/utils/console.dart';
+import 'package:syncodoro/utils/providers/database_provider.dart';
 
 class CountdownProvider extends ChangeNotifier {
   String clock = "00:00";

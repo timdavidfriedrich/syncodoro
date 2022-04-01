@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:syncodoro/main.dart';
 import 'package:syncodoro/config/themes/light_theme.dart';
 import 'package:syncodoro/config/themes/dark_theme.dart';
-import 'package:syncodoro/config/themes/color_provider.dart';
+import 'package:syncodoro/utils/providers/color_provider.dart';
 
 class ThemeHandler extends StatelessWidget {
   final Widget home;

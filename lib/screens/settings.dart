@@ -1,8 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:syncodoro/config/themes/color_provider.dart';
+import 'package:syncodoro/utils/providers/color_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:syncodoro/core/firebase/firebase.dart';
+import 'package:syncodoro/utils/providers/database_provider.dart';
+import 'package:syncodoro/utils/providers/google_provider.dart';
 import 'package:syncodoro/widgets/flexibleTile.dart';
 
 class Settings extends StatefulWidget {

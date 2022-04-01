@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:syncodoro/core/firebase/firebase.dart';
 
 import 'package:syncodoro/utils/providers/countdown_provider.dart';
+import 'package:syncodoro/utils/providers/database_provider.dart';
 
 class StatusButton extends StatefulWidget {
   const StatusButton({Key? key}) : super(key: key);
