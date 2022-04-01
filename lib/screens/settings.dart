@@ -77,38 +77,7 @@ class _SettingsState extends State<Settings> {
             ),
           ),
           FlexibleTile(
-            title: "Farbe Arbeit",
-            content: GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: cp.secondaryColorList.length,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-              ),
-              itemCount: cp.secondaryColorList.length,
-              itemBuilder: (context, index) {
-                return GridTile(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Material(
-                      color: Color(cp.secondaryColorList[index]),
-                      child: InkWell(
-                        child:
-                            Color(cp.secondaryColorList[index]) == cs.secondary
-                                ? const Icon(Icons.done_rounded)
-                                : Container(),
-                        onTap: () {
-                          cpf.setSecondaryColor(cpf.secondaryColorList[index]);
-                        },
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          FlexibleTile(
-            title: "Farbe Pause",
+            title: "Akzent-Farbe",
             content: GridView.builder(
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -163,7 +132,6 @@ class TimeSettings extends StatefulWidget {
 }
 
 class _TimeSettingsState extends State<TimeSettings> {
-  List types = ["Pomodoro", "Lange Pause", "Kurze Pause"];
   int pValue = defaultPomodoro;
   int lbValue = defaultLBreak;
   int sbValue = defaultSBreak;
@@ -194,7 +162,7 @@ class _TimeSettingsState extends State<TimeSettings> {
     return AlertDialog(
       //contentPadding: const EdgeInsets.all(0),
       content: Column(mainAxisSize: MainAxisSize.min, children: [
-        Text("Pomodoro: ${pValue ~/ 60}"),
+        Text("Arbeiten: ${pValue ~/ 60}"),
         Padding(
           padding: const EdgeInsets.only(bottom: 16),
           child: Slider.adaptive(
@@ -231,7 +199,7 @@ class _TimeSettingsState extends State<TimeSettings> {
           ),
         ),
         ElevatedButton(
-          child: Text("Okay",
+          child: Text("Speichern",
               style: tt.labelMedium!.copyWith(color: cs.onSecondary)),
           onPressed: () {
             updateValues();

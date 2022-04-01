@@ -59,31 +59,44 @@ class CountdownProvider extends ChangeNotifier {
     }
   }
 
-  runTimer(BuildContext context, int _started) {
-    if (timer != null) timer!.cancel();
+  runTimer(BuildContext context) {
+    stopTimer();
     timer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
+      printHint("status: $status");
+      if (status == "stop") {
+        percentage = 0;
+        clock = "00:00";
+        notifyListeners();
+        return;
+      } else if (status == "pause") {
+        return;
+      }
+
       final DateTime now = DateTime.now();
       int difference = now
-          .difference(DateTime.fromMillisecondsSinceEpoch(_started))
+          .difference(DateTime.fromMillisecondsSinceEpoch(started))
           .inSeconds;
-      int _remain = remain - difference; // seconds
-      printHint("$_remain | ${_remain ~/ 60}:${_remain % 60}");
-      String min = (_remain ~/ 60).toString().padLeft(2, "0");
-      String sec = (_remain % 60).toString().padLeft(2, "0");
+      int output = remain - difference; // seconds
+      printHint("$output | ${output ~/ 60}:${output % 60}");
+      String min = (output ~/ 60).toString().padLeft(2, "0");
+      String sec = (output % 60).toString().padLeft(2, "0");
 
-      if (_remain <= 0) stop(context);
+      if (output <= 0) stop(context);
       clock = min + ":" + sec;
-      percentage = 1 - (_remain / getTime());
+      percentage = 1 - (output / getTime());
 
       notifyListeners();
     });
+  }
+
+  stopTimer() {
+    if (timer != null) timer!.cancel();
   }
 
   play(BuildContext context, String _type) {
     type = _type;
     started = DateTime.now().millisecondsSinceEpoch;
     if (status == "stop") remain = getTime(); // Wenn vorher Stop, Neubeginn
-    runTimer(context, started);
 
     Provider.of<DatabaseProvider>(context, listen: false)
         .setStatus(type, "play", started, remain);
@@ -92,7 +105,6 @@ class CountdownProvider extends ChangeNotifier {
   }
 
   pause(BuildContext context) {
-    if (timer != null) timer!.cancel();
     DateTime now = DateTime.now();
     remain = remain - ((now.millisecondsSinceEpoch - started) ~/ 1000);
     printHint("remain: $remain");
@@ -103,12 +115,7 @@ class CountdownProvider extends ChangeNotifier {
   }
 
   stop(BuildContext context) {
-    if (timer != null) timer!.cancel();
     Provider.of<DatabaseProvider>(context, listen: false)
         .setStatus("none", "stop", 0, 0);
-    percentage = 0;
-    clock = "00:00";
-
-    notifyListeners();
   }
 }

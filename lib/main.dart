@@ -50,6 +50,8 @@ class Main extends StatefulWidget {
 }
 
 class _MainState extends State<Main> {
+  Timer? timer;
+
   update(snap) async {
     try {
       var value = await snap.data!.data();
@@ -71,7 +73,17 @@ class _MainState extends State<Main> {
   void initState() {
     super.initState();
     Provider.of<ColorProvider>(context, listen: false).initColors();
+    Provider.of<CountdownProvider>(context, listen: false).runTimer(context);
     Provider.of<DatabaseProvider>(context, listen: false).updateUser();
+
+    printHint("InitState (main)");
+  }
+
+  @override
+  void dispose() {
+    //Provider.of<CountdownProvider>(context, listen: false).stopTimer();
+    printHint("Disposed (main)");
+    super.dispose();
   }
 
   // Home-Widget
