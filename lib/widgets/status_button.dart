@@ -37,6 +37,17 @@ class _StatusButtonState extends State<StatusButton> {
                       ),
                       ListTile(
                         title: const Text(
+                          "Lange Pause",
+                          textAlign: TextAlign.center,
+                        ),
+                        onTap: () {
+                          Provider.of<DatabaseProvider>(context, listen: false)
+                              .setType("long break");
+                          Navigator.pop(context);
+                        },
+                      ),
+                      ListTile(
+                        title: const Text(
                           "Kurze Pause",
                           textAlign: TextAlign.center,
                         ),
@@ -46,17 +57,6 @@ class _StatusButtonState extends State<StatusButton> {
                           Navigator.pop(context);
                         },
                       ),
-                      ListTile(
-                        title: const Text(
-                          "Lange Pause",
-                          textAlign: TextAlign.center,
-                        ),
-                        onTap: () {
-                          Provider.of<DatabaseProvider>(context, listen: false)
-                              .setType("long break");
-                          Navigator.pop(context);
-                        },
-                      )
                     ]),
                   ));
         });
