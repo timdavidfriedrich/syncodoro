@@ -20,27 +20,38 @@ class _StatusButtonState extends State<StatusButton> {
           showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                    title: Text("Wähle..."),
-                    content: Column(children: [
-                      TextButton(
-                        child: Text("Arbeiten"),
-                        onPressed: () {
+                    //title: const Text("Auswählen"),
+                    titlePadding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
+                    contentPadding: const EdgeInsets.all(0),
+                    content: Column(mainAxisSize: MainAxisSize.min, children: [
+                      ListTile(
+                        title: const Text(
+                          "Arbeiten",
+                          textAlign: TextAlign.center,
+                        ),
+                        onTap: () {
                           Provider.of<DatabaseProvider>(context, listen: false)
                               .setType("pomodoro");
                           Navigator.pop(context);
                         },
                       ),
-                      TextButton(
-                        child: Text("Kurze Pause"),
-                        onPressed: () {
+                      ListTile(
+                        title: const Text(
+                          "Kurze Pause",
+                          textAlign: TextAlign.center,
+                        ),
+                        onTap: () {
                           Provider.of<DatabaseProvider>(context, listen: false)
                               .setType("short break");
                           Navigator.pop(context);
                         },
                       ),
-                      TextButton(
-                        child: Text("Lange Pause"),
-                        onPressed: () {
+                      ListTile(
+                        title: const Text(
+                          "Lange Pause",
+                          textAlign: TextAlign.center,
+                        ),
+                        onTap: () {
                           Provider.of<DatabaseProvider>(context, listen: false)
                               .setType("long break");
                           Navigator.pop(context);
