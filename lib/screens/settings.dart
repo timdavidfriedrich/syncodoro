@@ -30,6 +30,7 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
       appBar: AppBar(title: const Text("Einstellungen")),
       body: ListView(
+        physics: const BouncingScrollPhysics(),
         children: [
           Container(
             decoration: BoxDecoration(
@@ -62,8 +63,9 @@ class _SettingsState extends State<Settings> {
                         child: Text(
                           "Account wechseln",
                           textAlign: TextAlign.center,
-                          style: tt.labelSmall,
+                          style: tt.labelSmall!.copyWith(color: cs.primary),
                         ),
+                        style: ElevatedButton.styleFrom(primary: cs.onPrimary),
                         onPressed: () =>
                             Provider.of<GoogleProvider>(context, listen: false)
                                 .googleLogout(context),
