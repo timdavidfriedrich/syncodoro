@@ -61,7 +61,7 @@ class CountdownProvider extends ChangeNotifier {
 
   runTimer(BuildContext context) {
     stopTimer();
-    timer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
+    timer = Timer.periodic(const Duration(milliseconds: 250), (timer) {
       if (status == "stop") {
         percentage = 0;
         clock = "00:00";
@@ -80,7 +80,7 @@ class CountdownProvider extends ChangeNotifier {
       String min = (output ~/ 60).toString().padLeft(2, "0");
       String sec = (output % 60).toString().padLeft(2, "0");
 
-      if (output <= 0) stop(context);
+      if (output <= 0) phaseEnd(context);
       clock = min + ":" + sec;
       percentage = 1 - (output / getTime());
 
@@ -116,5 +116,46 @@ class CountdownProvider extends ChangeNotifier {
   stop(BuildContext context) {
     Provider.of<DatabaseProvider>(context, listen: false)
         .setStatus("none", "stop", 0, 0);
+  }
+
+  // TODO: play sound + pushup notification
+  phaseEnd(BuildContext context) {
+    // TODO: if auto. phasenwechsel an
+    if (1 == 1) {
+      if (type == "pomodoro") {
+        // TODO: if pausenzahl unter 4 o.ä.
+        if (2 == 2) {
+          stop(context);
+          type = "short break";
+          remain = sbTime;
+          notifyListeners();
+          Provider.of<DatabaseProvider>(context, listen: false)
+              .setType("short break");
+          play(context, "short break");
+        } else {
+          stop(context);
+          type = "long break";
+          remain = lbTime;
+          notifyListeners();
+          Provider.of<DatabaseProvider>(context, listen: false)
+              .setType("long break");
+          play(context, "long break");
+        }
+      } else if (type == "short break" || type == "long break") {
+        stop(context);
+        type = "pomodoro";
+        remain = pTime;
+        notifyListeners();
+        Provider.of<DatabaseProvider>(context, listen: false)
+            .setType("pomodoro");
+        play(context, "pomodoro");
+      } else {
+        printError("Phase not found (CountdownProvider)");
+        stop(context);
+      }
+    } else {
+      printHint("Auto. phase switch disabled => stop().");
+      stop(context);
+    }
   }
 }
