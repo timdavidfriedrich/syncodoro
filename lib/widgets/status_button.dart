@@ -14,6 +14,8 @@ class StatusButton extends StatefulWidget {
 class _StatusButtonState extends State<StatusButton> {
   @override
   Widget build(BuildContext context) {
+    var cdpf = Provider.of<CountdownProvider>(context, listen: false);
+    var dpf = Provider.of<DatabaseProvider>(context, listen: false);
     return TextButton(
         child: Text(Provider.of<CountdownProvider>(context).processType()),
         onPressed: () {
@@ -30,8 +32,8 @@ class _StatusButtonState extends State<StatusButton> {
                           textAlign: TextAlign.center,
                         ),
                         onTap: () {
-                          Provider.of<DatabaseProvider>(context, listen: false)
-                              .setType("pomodoro");
+                          cdpf.stop(context);
+                          dpf.setType("pomodoro");
                           Navigator.pop(context);
                         },
                       ),
@@ -41,8 +43,8 @@ class _StatusButtonState extends State<StatusButton> {
                           textAlign: TextAlign.center,
                         ),
                         onTap: () {
-                          Provider.of<DatabaseProvider>(context, listen: false)
-                              .setType("long break");
+                          cdpf.stop(context);
+                          dpf.setType("long break");
                           Navigator.pop(context);
                         },
                       ),
@@ -52,8 +54,8 @@ class _StatusButtonState extends State<StatusButton> {
                           textAlign: TextAlign.center,
                         ),
                         onTap: () {
-                          Provider.of<DatabaseProvider>(context, listen: false)
-                              .setType("short break");
+                          cdpf.stop(context);
+                          dpf.setType("short break");
                           Navigator.pop(context);
                         },
                       ),
