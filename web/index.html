@@ -20,6 +20,10 @@
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="A new Flutter project.">
 
+  <!-- Google Login -->
+  <meta name="google-signin-client_id" content="514982894397-p6ndovqf23uopl3g508lhh8mf22m22rn.apps.googleusercontent.com">
+
+
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -33,6 +37,24 @@
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+  <script>    
+    var firebaseConfig = {
+      apiKey: "AIzaSyA0sQJ_4Ti9wFJ7HU5XYBDrVDz5CyABXAg",
+      authDomain: "syncodoro.firebaseapp.com",
+      projectId: "syncodoro",
+      storageBucket: "syncodoro.appspot.com",
+      messagingSenderId: "514982894397",
+      appId: "1:514982894397:web:f662eb6cfbf89cda22c354",
+      measurementId: "G-PJ9NF7PFPF"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
@@ -100,5 +122,7 @@
       loadMainDartJs();
     }
   </script>
+
+
 </body>
 </html>
