@@ -112,23 +112,58 @@ class _SettingsState extends State<Settings> {
               subtitle: Text(
                   "Schaltet am Ende jeder Phase automatisch auf Pause/Arbeit.",
                   style: tt.bodySmall),
-              value: false,
+              value: true,
               onChanged: (value) {}),
           ListTile(
             title: const Text("Zeit-Einstellungen"),
             subtitle:
                 Text("Timer-Länge für Arbeit/Pause.", style: tt.bodySmall),
-            onTap: () => Provider.of<CountdownProvider>(context, listen: false)
-                        .status ==
-                    "play"
-                ? ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Stoppe zuvor deinen Timer!")))
-                : showDialog(
-                    context: context,
-                    builder: (context) => const TimeSettings()),
+            onTap: () =>
+                Provider.of<CountdownProvider>(context, listen: false).status !=
+                        "stop"
+                    ? showDialog(
+                        context: context,
+                        builder: (context) => const TimeError())
+                    : showDialog(
+                        context: context,
+                        builder: (context) => const TimeSettings()),
           )
         ],
       ),
+    );
+  }
+}
+
+class TimeError extends StatelessWidget {
+  const TimeError({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var cs = Theme.of(context).colorScheme;
+    var tt = Theme.of(context).textTheme;
+    return AlertDialog(
+      content: const Text("Stoppe zunächst deinen Timer, bevor du fortfährst."),
+      actions: [
+        TextButton(
+          child: Text(
+            "Abbrechen",
+            style: tt.labelMedium,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
+        ElevatedButton(
+          child: Text("Stoppen",
+              style: tt.labelMedium!.copyWith(color: cs.onSecondary)),
+          style: ElevatedButton.styleFrom(primary: cs.secondary),
+          onPressed: () {
+            Provider.of<CountdownProvider>(context, listen: false)
+                .stop(context);
+            Navigator.pop(context);
+            showDialog(
+                context: context, builder: (context) => const TimeSettings());
+          },
+        )
+      ],
     );
   }
 }
