@@ -14,7 +14,6 @@ class _StatisticsState extends State<Statistics> {
       appBar: AppBar(title: const Text("Statistik")),
       body: const Center(
           child: Text("Coming soon.\n\nTODO:" +
-              "\n- Auto. Phasenwechsel" +
               "\n- Akzentfarbe Arbeit/Pause" +
               "\n- Login via Email" +
               "\n- Statistik" +

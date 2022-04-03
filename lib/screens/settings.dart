@@ -77,7 +77,7 @@ class _SettingsState extends State<Settings> {
           ),
           FlexibleTile(
             title: "Akzent-Farbe",
-            subtitle: "Ändert zum Beispiel die Farbe der Progress-Bar.",
+            subtitle: "HINWEIS: Wird nur lokal gespeichert.",
             content: GridView.builder(
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -112,8 +112,10 @@ class _SettingsState extends State<Settings> {
               subtitle: Text(
                   "Schaltet am Ende jeder Phase automatisch auf Pause/Arbeit.",
                   style: tt.bodySmall),
-              value: true,
-              onChanged: (value) {}),
+              value: Provider.of<CountdownProvider>(context).auto,
+              onChanged: (value) =>
+                  Provider.of<DatabaseProvider>(context, listen: false)
+                      .setAuto(value)),
           ListTile(
             title: const Text("Zeit-Einstellungen"),
             subtitle:
@@ -179,10 +181,15 @@ class _TimeSettingsState extends State<TimeSettings> {
   int pValue = defaultPomodoro;
   int lbValue = defaultLBreak;
   int sbValue = defaultSBreak;
+  int iValue = defaultInterval;
 
   void updateValues() {
-    Provider.of<DatabaseProvider>(context, listen: false)
-        .setSettings(pValue, lbValue, sbValue);
+    Provider.of<DatabaseProvider>(context, listen: false).setSettings(
+        pValue,
+        lbValue,
+        sbValue,
+        iValue,
+        Provider.of<CountdownProvider>(context, listen: false).auto);
   }
 
   @override
@@ -191,6 +198,7 @@ class _TimeSettingsState extends State<TimeSettings> {
     pValue = Provider.of<CountdownProvider>(context, listen: false).pTime;
     lbValue = Provider.of<CountdownProvider>(context, listen: false).lbTime;
     sbValue = Provider.of<CountdownProvider>(context, listen: false).sbTime;
+    iValue = Provider.of<CountdownProvider>(context, listen: false).interval;
   }
 
   @override
@@ -238,6 +246,18 @@ class _TimeSettingsState extends State<TimeSettings> {
             onChanged: (value) => setState(() => sbValue = value.toInt() * 60),
             min: 1,
             max: 60,
+            activeColor: cs.secondary,
+            inactiveColor: cs.onPrimary,
+          ),
+        ),
+        Text("Phasen bis lange Pause: $iValue"),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 16),
+          child: Slider.adaptive(
+            value: (iValue).toDouble(),
+            onChanged: (value) => setState(() => iValue = value.toInt()),
+            min: 1,
+            max: 9,
             activeColor: cs.secondary,
             inactiveColor: cs.onPrimary,
           ),

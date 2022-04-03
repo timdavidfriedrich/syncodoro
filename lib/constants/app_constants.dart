@@ -5,3 +5,6 @@ int defaultRemain = 0 * 60; // seconds
 int defaultPomodoro = 25 * 60; // seconds
 int defaultLBreak = 20 * 60; // seconds
 int defaultSBreak = 5 * 60; // seconds
+int defaultCount = 0; // current pomodoro count
+int defaultInterval = 4; // pomodoros before long break
+bool defaultAuto = true; // auto phase switch

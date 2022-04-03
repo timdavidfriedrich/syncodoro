@@ -63,6 +63,9 @@ class _MainState extends State<Main> {
         value["pTime"] ?? defaultPomodoro,
         value["lbTime"] ?? defaultLBreak,
         value["sbTime"] ?? defaultSBreak,
+        value["count"] ?? defaultCount,
+        value["interval"] ?? defaultInterval,
+        value["auto"] ?? defaultAuto,
       );
     } catch (e) {
       printError("Data not found (main) | \"$e\"");

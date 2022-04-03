@@ -6,6 +6,9 @@ import 'package:syncodoro/constants/app_constants.dart';
 import 'package:syncodoro/utils/console.dart';
 import 'package:syncodoro/utils/providers/database_provider.dart';
 
+//! Zeitenanzeige (bei Pause?) verbuggt.
+//! Zeigt falsche Zeit an, die bei erneuten Play wieder korrigiert wird.
+
 class CountdownProvider extends ChangeNotifier {
   String clock = "00:00";
   Timer? timer;
@@ -18,9 +21,21 @@ class CountdownProvider extends ChangeNotifier {
   int pTime = defaultPomodoro;
   int lbTime = defaultLBreak;
   int sbTime = defaultSBreak;
+  int count = defaultCount;
+  int interval = defaultInterval;
+  bool auto = defaultAuto;
 
-  void updateData(String _type, String _status, int _started, int _remain,
-      int _pTime, int _lbTime, int _sbTime) {
+  void updateData(
+      String _type,
+      String _status,
+      int _started,
+      int _remain,
+      int _pTime,
+      int _lbTime,
+      int _sbTime,
+      int _count,
+      int _interval,
+      bool _auto) {
     type = _type;
     status = _status;
     started = _started;
@@ -28,6 +43,9 @@ class CountdownProvider extends ChangeNotifier {
     pTime = _pTime;
     lbTime = _lbTime;
     sbTime = _sbTime;
+    count = _count;
+    interval = _interval;
+    auto = _auto;
     notifyListeners();
   }
 
@@ -81,9 +99,9 @@ class CountdownProvider extends ChangeNotifier {
       String sec = (output % 60).toString().padLeft(2, "0");
 
       if (output <= 0) phaseEnd(context);
+
       clock = min + ":" + sec;
       percentage = 1 - (output / getTime());
-
       notifyListeners();
     });
   }
@@ -97,57 +115,52 @@ class CountdownProvider extends ChangeNotifier {
     started = DateTime.now().millisecondsSinceEpoch;
     if (status == "stop") remain = getTime(); // Wenn vorher Stop, Neubeginn
 
-    Provider.of<DatabaseProvider>(context, listen: false)
-        .setStatus(type, "play", started, remain);
-
     notifyListeners();
+    Provider.of<DatabaseProvider>(context, listen: false)
+        .setPhase(type, "play", started, remain, count);
   }
 
   pause(BuildContext context) {
     DateTime now = DateTime.now();
     remain = remain - ((now.millisecondsSinceEpoch - started) ~/ 1000);
     printHint("remain: $remain");
-    Provider.of<DatabaseProvider>(context, listen: false)
-        .setStatus(type, "pause", 0, remain);
 
     notifyListeners();
+    Provider.of<DatabaseProvider>(context, listen: false).setStatus("pause");
   }
 
   stop(BuildContext context) {
     Provider.of<DatabaseProvider>(context, listen: false)
-        .setStatus("none", "stop", 0, 0);
+        .setPhase("none", "stop", 0, 0, 0);
   }
 
   // TODO: play sound + pushup notification
   phaseEnd(BuildContext context) {
-    // TODO: if auto. phasenwechsel an
-    if (1 == 1) {
+    if (auto) {
       if (type == "pomodoro") {
-        // TODO: if pausenzahl unter 4 o.ä.
-        if (2 == 2) {
-          stop(context);
+        count++;
+        notifyListeners();
+        if ((count % interval) != 0) {
+          //stop(context);
           type = "short break";
           remain = sbTime;
           notifyListeners();
-          Provider.of<DatabaseProvider>(context, listen: false)
-              .setType("short break");
+          //Provider.of<DatabaseProvider>(context, listen: false).setType("short break");
           play(context, "short break");
         } else {
-          stop(context);
+          //stop(context);
           type = "long break";
           remain = lbTime;
           notifyListeners();
-          Provider.of<DatabaseProvider>(context, listen: false)
-              .setType("long break");
+          //Provider.of<DatabaseProvider>(context, listen: false).setType("long break");
           play(context, "long break");
         }
       } else if (type == "short break" || type == "long break") {
-        stop(context);
+        //stop(context);
         type = "pomodoro";
         remain = pTime;
         notifyListeners();
-        Provider.of<DatabaseProvider>(context, listen: false)
-            .setType("pomodoro");
+        //Provider.of<DatabaseProvider>(context, listen: false).setType("pomodoro");
         play(context, "pomodoro");
       } else {
         printError("Phase not found (CountdownProvider)");
