@@ -48,7 +48,7 @@ class _FlexibleTileState extends State<FlexibleTile> {
           subtitle: Text(processSubtitle(), style: tt.bodySmall),
           onTap: () => setState(() => expanded = !expanded),
           trailing: Padding(
-            padding: const EdgeInsets.only(right: 16),
+            padding: const EdgeInsets.only(right: 8),
             child: expanded
                 ? Icon(Icons.keyboard_arrow_up_outlined, color: cs.onPrimary)
                 : Icon(Icons.keyboard_arrow_down_outlined, color: cs.onPrimary),

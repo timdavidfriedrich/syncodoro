@@ -103,6 +103,13 @@ class ThemeHandler extends StatelessWidget {
         ),
       ),
 
+      checkboxTheme: CheckboxThemeData(
+        fillColor: MaterialStateProperty.resolveWith((states) =>
+            states.contains(MaterialState.selected)
+                ? secondary.withOpacity(0.5)
+                : onPrimary),
+      ),
+
       ///* Text-Themes
       textTheme: TextTheme(
         titleSmall: GoogleFonts.azeretMono(color: Colors.blue[300]),

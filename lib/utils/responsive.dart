@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 class Responsive extends StatelessWidget {
   final Widget portrait;
   final Widget landscape;
-  const Responsive({Key? key, required this.portrait, required this.landscape})
+  final Widget? desktop;
+  const Responsive(
+      {Key? key, required this.portrait, required this.landscape, this.desktop})
       : super(key: key);
 
   @override
@@ -11,7 +13,9 @@ class Responsive extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         //if (constraints.maxWidth < 480) {
-        if (MediaQuery.of(context).orientation == Orientation.portrait) {
+        if (desktop != null && constraints.maxWidth > 800) {
+          return desktop!;
+        } else if (MediaQuery.of(context).orientation == Orientation.portrait) {
           return portrait;
         } else {
           return landscape;

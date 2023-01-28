@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:syncodoro/screens/home_desktop.dart';
 
 import 'package:syncodoro/utils/providers/color_provider.dart';
 import 'package:syncodoro/config/themes/theme_config.dart';
@@ -105,6 +106,7 @@ class _MainState extends State<Main> {
             return const Responsive(
               portrait: HomePortrait(),
               landscape: HomeLandscape(),
+              desktop: HomeDesktop(),
             );
           } else {
             return Center(
